@@ -1,0 +1,153 @@
+body {
+
+margin: 0;
+font-family: Arial;
+
+background: #f4f4f4;
+
+}
+
+.header{
+background:black;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+box-shadow:0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* LOGO */
+
+.logo{
+font-size:22px;
+font-weight:bold;
+letter-spacing:1px;
+}
+
+/* MENU */
+
+.menu{
+display:flex;
+align-items:center;
+}
+
+/* BOUTONS */
+
+.menu-btn{
+background:#7a1f2b;
+color:white;
+text-decoration:none;
+padding:8px 18px;
+margin-left:15px;
+border-radius:5px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.menu-btn:hover{
+background:#a52a3a;
+transform:scale(1.05);
+}
+
+/* BOUTON PANIER */
+
+.panier{
+background:#a52a3a;
+}
+nav a {
+
+color: white;
+margin-right: 20px;
+text-decoration: none;
+font-weight: bold;
+
+}
+
+nav a:hover {
+
+text-decoration: underline;
+
+}
+
+/* TITRE */
+
+h2 {
+
+margin-left: 20px;
+
+}
+
+/* GRID PRODUITS */
+
+.container {
+
+padding: 20px;
+
+}
+
+.grid {
+
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+
+}
+
+/* CARD */
+
+.card {
+
+background: white;
+
+width: 200px;
+
+padding: 10px;
+
+border-radius: 8px;
+
+text-align: center;
+
+box-shadow: 0 0 8px rgba(0,0,0,0.1);
+
+}
+
+.card img {
+
+width: 150px;
+height: 150px;
+
+object-fit: cover;
+
+margin-bottom: 10px;
+
+}
+
+.prix {
+
+font-weight: bold;
+margin: 5px 0;
+
+}
+
+button {
+
+background: #c89b3c;
+
+border: none;
+
+padding: 8px 15px;
+
+color: white;
+
+cursor: pointer;
+
+border-radius: 5px;
+
+}
+
+button:hover {
+
+background: #a88430;
+
+}
