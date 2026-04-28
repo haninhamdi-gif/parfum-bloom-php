@@ -1,18 +1,14 @@
 <?php
 session_start();
 
-/* ===========================
-   CONNEXION BASE DE DONNÉES
-=========================== */
+
 
 require_once "config/Database.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
-/* ===========================
-   RÉCUPÉRATION DU PRODUIT
-=========================== */
+
 
 if(isset($_GET['id'])){
 
@@ -34,9 +30,7 @@ if(isset($_GET['id'])){
     exit;
 }
 
-/* ===========================
-   GESTION DU CHOIX ML
-=========================== */
+
 
 if(isset($_POST['ml'])){
     $ml = intval($_POST['ml']);
@@ -48,9 +42,7 @@ else{
     $ml = 50;
 }
 
-/* ===========================
-   GESTION QUANTITÉ
-=========================== */
+
 
 if(isset($_POST['quantite'])){
     $quantite = intval($_POST['quantite']);
@@ -69,9 +61,6 @@ if(isset($_POST['moins'])){
     }
 }
 
-/* ===========================
-   CALCUL DU PRIX
-=========================== */
 
 if($ml == 50){
     $prix = $produit['prix50'];
@@ -96,9 +85,7 @@ else{
 
 <style>
 
-/* ===========================
-   STRUCTURE GLOBALE
-=========================== */
+
 
 html{
     scroll-behavior:smooth;
@@ -114,9 +101,7 @@ body{
 }
 
 
-/* ===========================
-   HEADER
-=========================== */
+
 
 .header{
     background:black;
@@ -129,9 +114,7 @@ body{
 }
 
 
-/* ===========================
-   BOUTONS MENU
-=========================== */
+
 
 .menu-btn{
     background:#7a1f2b;
@@ -149,9 +132,7 @@ body{
 }
 
 
-/* ===========================
-   BARRE LIVRAISON
-=========================== */
+
 
 .livraison-bar{
     background:#7a1f2b;
@@ -161,10 +142,6 @@ body{
     font-weight:bold;
 }
 
-
-/* ===========================
-   CONTENU PRODUIT
-=========================== */
 
 .container{
     flex:1;
@@ -179,9 +156,7 @@ body{
 }
 
 
-/* ===========================
-   IMAGE PRODUIT
-=========================== */
+
 
 .image-box img{
     width:320px;
@@ -190,9 +165,7 @@ body{
 }
 
 
-/* ===========================
-   TITRE PRODUIT
-=========================== */
+
 
 h1{
     color:#7a1f2b;
@@ -200,9 +173,7 @@ h1{
 }
 
 
-/* ===========================
-   BOUTONS ML
-=========================== */
+
 
 .ml-buttons button{
     padding:8px 14px;
@@ -221,9 +192,7 @@ h1{
 }
 
 
-/* ===========================
-   QUANTITÉ
-=========================== */
+
 
 .quantite button{
     padding:7px 13px;
@@ -239,9 +208,7 @@ h1{
 }
 
 
-/* ===========================
-   PRIX
-=========================== */
+
 
 .price{
     color:#7a1f2b;
@@ -251,18 +218,14 @@ h1{
 }
 
 
-/* ===========================
-   DESCRIPTION
-=========================== */
+
 
 p{
     line-height:1.6;
 }
 
 
-/* ===========================
-   FAVORIS
-=========================== */
+
 
 .btn-favoris{
     margin-top:12px;
@@ -282,9 +245,7 @@ p{
 }
 
 
-/* ===========================
-   BOUTONS PANIER / RETOUR
-=========================== */
+
 
 .btn-group{
     display:flex;
@@ -312,9 +273,7 @@ p{
 }
 
 
-/* ===========================
-   FOOTER CONTACT
-=========================== */
+
 
 footer{
     background:black;
@@ -334,9 +293,7 @@ footer p{
 }
 
 
-/* ===========================
-   RESPONSIVE
-=========================== */
+
 
 @media(max-width:800px){
 
@@ -362,9 +319,7 @@ footer p{
 
 <body>
 
-<!-- ===========================
-     HEADER
-=========================== -->
+
 
 <div class="header">
 
@@ -391,18 +346,14 @@ if(isset($_SESSION['panier'])){
 </div>
 
 
-<!-- ===========================
-     BARRE LIVRAISON
-=========================== -->
+
 
 <div class="livraison-bar">
 🚚 Livraison gratuite à partir de 99 DT
 </div>
 
 
-<!-- ===========================
-     CONTENU PRODUIT
-=========================== -->
+
 
 <div class="container">
 
