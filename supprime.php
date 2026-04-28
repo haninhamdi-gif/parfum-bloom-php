@@ -1,3 +1,4 @@
+//suppression d'un seul produit du panier
 <?php
 session_start();
 

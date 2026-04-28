@@ -1,3 +1,4 @@
+//suppression tous les produits du panier
 <?php
 session_start();
 if(isset($_SESSION['panier'])){

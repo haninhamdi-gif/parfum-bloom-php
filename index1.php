@@ -25,7 +25,6 @@ body{
     background:#ffffff;
 }
 
-/* HEADER */
 
 .header{
     background:black;
@@ -78,7 +77,6 @@ body{
     transform:translateY(-2px);
 }
 
-/* BARRE LIVRAISON */
 
 .livraison-bar{
     background:#7a1f2b;
@@ -99,7 +97,7 @@ body{
     top:8px;
 }
 
-/* USER BOX */
+
 
 .user-box{
     text-align:center;
@@ -131,7 +129,7 @@ body{
     transform:translateY(-2px);
 }
 
-/* SECTIONS */
+
 
 .section{
     background:#ffffff;
@@ -164,7 +162,6 @@ body{
     border-radius:3px;
 }
 
-/* PRODUITS */
 
 .products{
     background:#ffffff;
@@ -230,7 +227,6 @@ body{
     transform:scale(1.05);
 }
 
-/* RESPONSIVE */
 
 @media(max-width:900px){
 

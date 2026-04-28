@@ -8,22 +8,22 @@ require_once "config/Database.php";
 $database = new Database();
 $db = $database->getConnection();
 
-if(!isset($_SESSION['user_id'])){
+if(!isset($_SESSION['user_nom'])){
     header("Location: login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_nom = $_SESSION['user_nom'];
 
 $sql = "SELECT c.*, cl.nom, cl.email, cl.telephone, cl.adresse
         FROM commandes c
         JOIN clients cl ON c.client_id = cl.client_id
-        WHERE c.user_id = :user_id
+        WHERE LOWER(cl.nom) = LOWER(:nom)
         ORDER BY c.id DESC";
 
 $stmt = $db->prepare($sql);
 $stmt->execute([
-    ':user_id' => $user_id
+    ':nom' => $user_nom
 ]);
 
 $commandes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,9 +40,6 @@ body{
     margin:0;
     font-family:Arial, sans-serif;
     background:white;
-    display:flex;
-    flex-direction:column;
-    min-height:100vh;
 }
 
 .header{
@@ -78,10 +75,6 @@ body{
     background:#a52a3a;
 }
 
-.main-content{
-    flex:1;
-}
-
 .container{
     max-width:950px;
     margin:40px auto;
@@ -108,8 +101,9 @@ h1{
     padding:15px 20px;
     display:flex;
     justify-content:space-between;
-    flex-wrap:wrap;
+    align-items:center;
     gap:10px;
+    flex-wrap:wrap;
     font-weight:bold;
 }
 
@@ -135,11 +129,17 @@ h1{
     font-weight:bold;
 }
 
+.articles-title{
+    color:#7a1f2b;
+    font-weight:bold;
+    margin-bottom:12px;
+    display:block;
+}
+
 .articles{
     display:flex;
     flex-wrap:wrap;
     gap:15px;
-    margin-top:15px;
 }
 
 .article{
@@ -161,7 +161,7 @@ h1{
 
 .article h4{
     margin:0 0 5px;
-    font-size:14px;
+    font-size:15px;
 }
 
 .article p{
@@ -172,42 +172,8 @@ h1{
 
 .vide{
     text-align:center;
-    background:white;
-    padding:50px;
-    border-radius:14px;
     color:#777;
-}
-
-.btn-retour{
-    display:inline-block;
-    margin-top:15px;
-    background:#7a1f2b;
-    color:white;
-    text-decoration:none;
-    padding:12px 25px;
-    border-radius:25px;
-    font-weight:bold;
-}
-
-.btn-retour:hover{
-    background:#a52a3a;
-}
-
-.btn-supprimer{
-    background:#dc3545;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:25px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:20px;
-    transition:0.3s;
-}
-
-.btn-supprimer:hover{
-    background:#b02a37;
-    transform:translateY(-2px);
+    margin-top:50px;
 }
 </style>
 </head>
@@ -225,7 +191,7 @@ h1{
         <a href="panier.php" class="menu-btn">
             Panier 🛒
             <?php
-            if(isset($_SESSION['panier'])){
+            if(isset($_SESSION['panier']) && count($_SESSION['panier']) > 0){
                 echo " (".count($_SESSION['panier']).")";
             }
             ?>
@@ -234,21 +200,15 @@ h1{
 
 </div>
 
-<div class="main-content">
-
 <div class="container">
 
 <h1>📋 Historique d'achat</h1>
 
 <?php if(count($commandes) == 0): ?>
 
-<div class="vide">
-    <h3>Aucune commande trouvée.</h3>
-
-    <a href="index1.php" class="btn-retour">
-        Découvrir nos parfums
-    </a>
-</div>
+    <div class="vide">
+        <h3>Aucune commande trouvée</h3>
+    </div>
 
 <?php else: ?>
 
@@ -256,7 +216,7 @@ h1{
 
 <?php
 $sqlArt = "SELECT * FROM details_commande 
-WHERE commande_id = :commande_id";
+           WHERE commande_id = :commande_id";
 
 $stmtArt = $db->prepare($sqlArt);
 $stmtArt->execute([
@@ -264,15 +224,27 @@ $stmtArt->execute([
 ]);
 
 $articles = $stmtArt->fetchAll(PDO::FETCH_ASSOC);
+
+$articles_groupes = [];
+
+foreach($articles as $art){
+
+    $key = $art['nom'] . '_' . $art['prix'] . '_' . $art['image'];
+
+    if(isset($articles_groupes[$key])){
+        $articles_groupes[$key]['quantite'] += $art['quantite'];
+    }else{
+        $articles_groupes[$key] = $art;
+    }
+}
 ?>
 
 <div class="commande">
 
     <div class="commande-header">
-
         <span>
-            Commande #<?php echo $cmd['id']; ?> -
-            <?php echo htmlspecialchars($cmd['nom']); ?>
+            Commande #<?php echo $cmd['id']; ?>
+            - <?php echo htmlspecialchars($cmd['nom']); ?>
 
             <?php
             if(isset($cmd['date_commande'])){
@@ -284,7 +256,6 @@ $articles = $stmtArt->fetchAll(PDO::FETCH_ASSOC);
         <span class="badge-total">
             Total : <?php echo number_format($cmd['total'], 2); ?> DT
         </span>
-
     </div>
 
     <div class="commande-body">
@@ -303,41 +274,38 @@ $articles = $stmtArt->fetchAll(PDO::FETCH_ASSOC);
             <span><?php echo htmlspecialchars($cmd['adresse']); ?></span>
         </div>
 
-        <strong style="color:#7a1f2b;">
+        <span class="articles-title">
             🛍 Articles commandés :
-        </strong>
+        </span>
 
         <div class="articles">
 
-        <?php foreach($articles as $art): ?>
+            <?php foreach($articles_groupes as $art): ?>
 
-            <div class="article">
+                <div class="article">
+                    <img src="images/<?php echo htmlspecialchars($art['image']); ?>" alt="Produit">
 
-                <img src="images/<?php echo htmlspecialchars($art['image']); ?>">
+                    <div>
+                        <h4><?php echo htmlspecialchars($art['nom']); ?></h4>
 
-                <div>
-                    <h4><?php echo htmlspecialchars($art['nom']); ?></h4>
-
-                    <p>
-                        <?php echo number_format($art['prix'], 2); ?> DT
-                        x <?php echo $art['quantite']; ?>
-                    </p>
+                        <p>
+                            <?php echo number_format($art['prix'], 2); ?> DT
+                            x <?php echo $art['quantite']; ?>
+                        </p>
+                    </div>
                 </div>
 
-            </div>
-
-        <?php endforeach; ?>
+            <?php endforeach; ?>
 
         </div>
 
+    </div>
 
 </div>
 
 <?php endforeach; ?>
 
 <?php endif; ?>
-
-</div>
 
 </div>
 

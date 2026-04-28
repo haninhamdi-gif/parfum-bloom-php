@@ -3,7 +3,6 @@ session_start();
 
 $livraison = 4.500;
 
-/* Regrouper les produits identiques */
 $grouped = [];
 
 if(isset($_SESSION['panier'])){
@@ -24,7 +23,6 @@ if(isset($_SESSION['panier'])){
 
             $item['quantite'] = 1;
 
-            /* garder l'index original pour supprime.php */
             $item['index_original'] = $index;
 
             $grouped[$key] = $item;
@@ -32,14 +30,14 @@ if(isset($_SESSION['panier'])){
     }
 }
 
-/* Calcul total */
+
 $total = 0;
 
 foreach($grouped as $item){
     $total += $item['prix'] * $item['quantite'];
 }
 
-/* Livraison gratuite dès 99 DT */
+
 if($total == 0){
     $livraison_finale = 0;
 }

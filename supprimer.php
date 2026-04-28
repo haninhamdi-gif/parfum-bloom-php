@@ -1,3 +1,4 @@
+//suppression d'un seul produit de favoris
 <?php
 session_start();
 if(isset($_POST['id'])){
